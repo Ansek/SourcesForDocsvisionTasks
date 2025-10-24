@@ -9,7 +9,6 @@ import { IDataChangedEventArgs } from "@docsvision/webclient/System/IDataChanged
 /**
  * Событие после открытия карточки.
  * @param layout Разметка.
- * @param args Аргументы.
  */
 export function ddApplicationRequestBusiness_cardOpened(layout:Layout) {
     if (!layout) return;
@@ -37,7 +36,8 @@ export function ddApplicationRequestBusiness_cardSaving(
 
 /**
  * Событие после обновления даты командировки.
- * @param dtp Поле ввода даты.
+ * @param dateTravel Поле ввода даты.
+ * @param args Аргументы.
  */
 export function ddApplicationRequestBusiness_dateTravelUpdated(
     dateTravel:DateTimePicker,
@@ -50,7 +50,7 @@ export function ddApplicationRequestBusiness_dateTravelUpdated(
 
 /**
  * Событие нажатия кнопки для отображения данных о карточке.
- * @param dtp Кнопка.
+ * @param btn Кнопка.
  */
 export function ddApplicationRequestBusiness_showCardDataClicked(
     btn:CustomButton) {
