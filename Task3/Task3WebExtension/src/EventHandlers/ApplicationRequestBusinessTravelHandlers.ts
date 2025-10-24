@@ -7,7 +7,7 @@ import { ApplicationRequestBusinessTravelLogic } from "../Logic/ApplicationReque
 import { IDataChangedEventArgs } from "@docsvision/webclient/System/IDataChangedEventArgs";
 
 /**
- * Событие после открытия карточки
+ * Событие после открытия карточки.
  * @param layout Разметка.
  * @param args Аргументы.
  */
@@ -18,7 +18,7 @@ export function ddApplicationRequestBusiness_cardOpened(layout:Layout) {
 }
 
 /**
- * Событие перед сохранением карточки
+ * Событие перед сохранением карточки.
  * @param layout Разметка.
  * @param args Аргументы.
  */
@@ -36,7 +36,7 @@ export function ddApplicationRequestBusiness_cardSaving(
 }
 
 /**
- * Событие после обновления даты командировки
+ * Событие после обновления даты командировки.
  * @param dtp Поле ввода даты.
  */
 export function ddApplicationRequestBusiness_dateTravelUpdated(
@@ -49,8 +49,8 @@ export function ddApplicationRequestBusiness_dateTravelUpdated(
 }
 
 /**
- * Событие после обновления поля командируемого
- * @param dtp Поле ввода командируемого.
+ * Событие нажатия кнопки для отображения данных о карточке.
+ * @param dtp Кнопка.
  */
 export function ddApplicationRequestBusiness_showCardDataClicked(
     btn:CustomButton) {
