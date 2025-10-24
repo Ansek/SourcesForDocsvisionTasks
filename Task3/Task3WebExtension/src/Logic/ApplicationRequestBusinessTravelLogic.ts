@@ -1,6 +1,7 @@
 import { Layout } from "@docsvision/webclient/System/Layout";
 import { TextBox } from "@docsvision/webclient/Platform/TextBox";
 import { TextArea } from "@docsvision/webclient/Platform/TextArea";
+import { Dropdown } from "@docsvision/webclient/Platform/Dropdown";
 import { NumberControl } from "@docsvision/webclient/Platform/Number";
 import { LayoutControl } from "@docsvision/webclient/System/BaseControl";
 import { DateTimePicker } from "@docsvision/webclient/Platform/DateTimePicker";
@@ -29,9 +30,14 @@ export class ApplicationRequestBusinessTravelLogic {
         const controls = layout.layout.controls;
         let validationResults = control.validate({ ShowErrorMessage: true }) || [];
         let invalidResults = validationResults.filter((value) => !value.Passed);
-        if (invalidResults.length !== 0) {
-            let labelTexts = invalidResults.map((control) => controls.get<any>(`${control.ControlName}`).params.labelText);
-            const text = 'Необходимо заполнить ' + (invalidResults.length === 1 ? 'поле': 'поля');
+        let labelTexts = invalidResults.map((control) => controls.get<any>(`${control.ControlName}`).params.labelText);
+            
+        let tickets = layout.controls.get<Dropdown>("tickets");
+        if (tickets.params.value === null)
+            labelTexts.push(tickets.params.labelText)
+
+        if (labelTexts.length !== 0) {
+            const text = 'Необходимо заполнить ' + (labelTexts.length === 1 ? 'поле': 'поля');
             layout.layout.params.services.messageWindow.showWarning(`${text}: ${labelTexts.join(', ')}.`);
             return true;
         }
