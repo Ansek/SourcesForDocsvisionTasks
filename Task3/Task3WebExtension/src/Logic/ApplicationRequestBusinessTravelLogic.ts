@@ -17,9 +17,12 @@ export class ApplicationRequestBusinessTravelLogic {
      */ 
     public initFields(layout: Layout) {
         let toTravelDate = layout.controls.get<DateTimePicker>("toTravelDate");
-        let newDate = toTravelDate.params.value.getTime();
-        newDate += ApplicationRequestBusinessTravelLogic.MS_IN_DAY;
-        toTravelDate.params.value = new Date(newDate);
+        let fromTravelDate = layout.controls.get<DateTimePicker>("fromTravelDate");
+        if (toTravelDate.params.value.getTime() === fromTravelDate.params.value.getTime()) {
+            let newDate = toTravelDate.params.value.getTime();
+            newDate += ApplicationRequestBusinessTravelLogic.MS_IN_DAY;
+            toTravelDate.params.value = new Date(newDate);
+        }
     }
 
     /**
