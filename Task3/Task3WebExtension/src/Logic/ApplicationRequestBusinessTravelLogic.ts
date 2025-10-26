@@ -5,6 +5,7 @@ import { Dropdown } from "@docsvision/webclient/Platform/Dropdown";
 import { NumberControl } from "@docsvision/webclient/Platform/Number";
 import { LayoutControl } from "@docsvision/webclient/System/BaseControl";
 import { DateTimePicker } from "@docsvision/webclient/Platform/DateTimePicker";
+import { DirectoryDesignerRow } from "@docsvision/webclient/BackOffice/DirectoryDesignerRow";
 import { MessageBox } from "@docsvision/webclient/Helpers/MessageBox/MessageBox";
 
 export class ApplicationRequestBusinessTravelLogic {
@@ -81,6 +82,7 @@ export class ApplicationRequestBusinessTravelLogic {
         let fromTravelDate = layout.controls.get<DateTimePicker>("fromTravelDate");
         let toTravelDate = layout.controls.get<DateTimePicker>("toTravelDate");
         let reasonTravel = layout.controls.get<TextArea>("reasonTravel");
+        let city = layout.controls.get<DirectoryDesignerRow>("city");
 
         let notValueMsg = "<не задано>";
         const formatDate = (d: Date): string => {
@@ -95,10 +97,12 @@ export class ApplicationRequestBusinessTravelLogic {
         let fromTravelDateValue = formatDate(fromTravelDate.params.value);
         let toTravelDateValue = formatDate(toTravelDate.params.value);
         let reasonTravelValue = reasonTravel.params.value ?? notValueMsg;
+        let cityValue = city.params.value?.name ?? notValueMsg;
 
         let msg = `Название: ${cardNameValue}\n`;
         msg += `Дата создания: ${createDateValue}\n`;
         msg += `Дата командировки с ${fromTravelDateValue} по ${toTravelDateValue}\n`;
+        msg += `Город: ${cityValue}\n`;
         msg += 'Основание для поездки:\n' + reasonTravelValue;
 
         MessageBox.ShowInfo(msg);
