@@ -7,16 +7,6 @@ import { ApplicationRequestBusinessTravelLogic } from "../Logic/ApplicationReque
 import { IDataChangedEventArgs } from "@docsvision/webclient/System/IDataChangedEventArgs";
 
 /**
- * Событие после открытия карточки.
- * @param layout Разметка.
- */
-export function ddApplicationRequestBusiness_cardOpened(layout:Layout) {
-    if (!layout) return;
-    let logic = new ApplicationRequestBusinessTravelLogic();
-    logic.initFields(layout);
-}
-
-/**
  * Событие перед сохранением карточки.
  * @param layout Разметка.
  * @param args Аргументы.

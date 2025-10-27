@@ -13,20 +13,6 @@ export class ApplicationRequestBusinessTravelLogic {
     private static readonly MS_IN_DAY = 1000 * 60 * 60 * 24;
 
     /**
-     * Инициализация полей разметки.
-     * @param layout Разметка.
-     */ 
-    public initFields(layout: Layout) {
-        let toTravelDate = layout.controls.get<DateTimePicker>("toTravelDate");
-        let fromTravelDate = layout.controls.get<DateTimePicker>("fromTravelDate");
-        if (toTravelDate.params.value.getTime() === fromTravelDate.params.value.getTime()) {
-            let newDate = toTravelDate.params.value.getTime();
-            newDate += ApplicationRequestBusinessTravelLogic.MS_IN_DAY;
-            toTravelDate.params.value = new Date(newDate);
-        }
-    }
-
-    /**
      * Проверяет поля на наличие значений.
      * @param layout Разметка.
      */ 
