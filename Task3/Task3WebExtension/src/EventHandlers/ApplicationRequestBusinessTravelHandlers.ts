@@ -34,8 +34,7 @@ export function ddApplicationRequestBusiness_dateTravelUpdated(
     args: IDataChangedEventArgs) {
     if (!dateTravel || args.newValue === args.oldValue) return;
     let logic = new ApplicationRequestBusinessTravelLogic();
-    if (!logic.updateDaysCount(dateTravel.layout))
-        dateTravel.params.value = args.oldValue;
+    logic.onTravelDateChanged(dateTravel, args.oldValue);
 }
 
 /**

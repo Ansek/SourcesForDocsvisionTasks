@@ -34,28 +34,60 @@ export class ApplicationRequestBusinessTravelLogic {
         return false;
     }
 
+    /** Возвращает значение полей даты командировки.
+     * @param Разметка.
+     * @returns Даты 'c' и 'по' командировки.
+     */
+    public getTravelDates(layout: Layout): [Date?, Date?] {
+        return [
+            layout.controls.get<DateTimePicker>("fromTravelDate").params.value,
+            layout.controls.get<DateTimePicker>("toTravelDate").params.value
+        ];
+    }
+
+    /**
+     * Проверка корректного расположения дат командировки.
+     * @param layout Разметка.
+     */ 
+    public checkTravelDateOrder(layout: Layout) {
+        let [fromDate, toDate] = this.getTravelDates(layout);
+        if (fromDate && toDate && fromDate.getTime() > toDate.getTime()) {
+            let msg = "Значение даты командировки 'с' ("
+            msg += fromDate.toLocaleDateString('ru-RU');
+            msg += ") должно быть меньше или равно дате 'по' ("
+            msg += toDate.toLocaleDateString('ru-RU') + ')';
+            MessageBox.ShowWarning(msg);
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Обновляет значение количества дней командировки.
      * @param layout Разметка.
      */ 
     public updateDaysCount(layout: Layout) {
-        let fromTravelDate = layout.controls.get<DateTimePicker>("fromTravelDate");
-        let toTravelDate = layout.controls.get<DateTimePicker>("toTravelDate");
-        let dayCount = layout.controls.get<NumberControl>("dayCount");
-        let fromDate = fromTravelDate.params.value;
-        let toDate = toTravelDate.params.value;
-        dayCount.params.value = (toDate.getTime() - fromDate.getTime()) / ApplicationRequestBusinessTravelLogic.MS_IN_DAY;
-        if (dayCount.params.value < 0) {
-            let msg = "Значение даты командировки 'c' больше 'по':\n";
-            msg += `${fromDate.toLocaleDateString('ru-RU')} > `;
-            msg += `${toDate.toLocaleDateString('ru-RU')}`;
-            MessageBox.ShowWarning(msg);
-            return false;
-        } else if (dayCount.params.value === 0) {
-            MessageBox.ShowWarning("Даты командировки 'c' и 'по' равны");
-            return false;
+        let [fromDate, toDate] = this.getTravelDates(layout);
+        if (fromDate && toDate) {
+            let dayCount = layout.controls.get<NumberControl>("dayCount");
+            let ms_in_day = ApplicationRequestBusinessTravelLogic.MS_IN_DAY;
+            dayCount.params.value = (toDate.getTime() - fromDate.getTime()) / ms_in_day + 1;
         }
-        return true;
+    }
+
+    /**
+     * Дополнительные действия после изменения даты командировки.
+     * @param layout Разметка.
+     */ 
+    public onTravelDateChanged(dateTravel: DateTimePicker, oldValue: Date) {
+        let layout = dateTravel.layout;
+        let [fromDate, toDate] = this.getTravelDates(layout);
+        if (fromDate && toDate) {
+            if (this.checkTravelDateOrder(layout))
+                this.updateDaysCount(layout);
+            else
+                dateTravel.params.value = oldValue;
+        }
     }
 
     /**
