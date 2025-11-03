@@ -34,24 +34,13 @@ export class ApplicationRequestBusinessTravelLogic {
         return false;
     }
 
-    /** Возвращает значение полей даты командировки.
-     * @param Разметка.
-     * @returns Даты 'c' и 'по' командировки.
-     */
-    public getTravelDates(layout: Layout): [Date?, Date?] {
-        return [
-            layout.controls.get<DateTimePicker>("fromTravelDate").params.value,
-            layout.controls.get<DateTimePicker>("toTravelDate").params.value
-        ];
-    }
-
     /**
      * Проверка корректного расположения дат командировки.
-     * @param layout Разметка.
+     * @param fromDate Дата командировки 'c'.
+     * @param toDate Дата командировки 'по'.
      */ 
-    public checkTravelDateOrder(layout: Layout) {
-        let [fromDate, toDate] = this.getTravelDates(layout);
-        if (fromDate && toDate && fromDate.getTime() > toDate.getTime()) {
+    private checkTravelDateOrder(fromDate: Date, toDate: Date) {
+        if (fromDate.getTime() > toDate.getTime()) {
             let msg = "Значение даты командировки 'с' ("
             msg += fromDate.toLocaleDateString('ru-RU');
             msg += ") должно быть меньше или равно дате 'по' ("
@@ -65,14 +54,13 @@ export class ApplicationRequestBusinessTravelLogic {
     /**
      * Обновляет значение количества дней командировки.
      * @param layout Разметка.
+     * @param fromDate Дата командировки 'c'.
+     * @param toDate Дата командировки 'по'.
      */ 
-    public updateDaysCount(layout: Layout) {
-        let [fromDate, toDate] = this.getTravelDates(layout);
-        if (fromDate && toDate) {
-            let dayCount = layout.controls.get<NumberControl>("dayCount");
-            let ms_in_day = ApplicationRequestBusinessTravelLogic.MS_IN_DAY;
-            dayCount.params.value = (toDate.getTime() - fromDate.getTime()) / ms_in_day + 1;
-        }
+    private updateDaysCount(layout: Layout, fromDate: Date, toDate: Date) {
+        let dayCount = layout.controls.get<NumberControl>("dayCount");
+        let ms_in_day = ApplicationRequestBusinessTravelLogic.MS_IN_DAY;
+        dayCount.params.value = (toDate.getTime() - fromDate.getTime()) / ms_in_day + 1;
     }
 
     /**
@@ -81,10 +69,11 @@ export class ApplicationRequestBusinessTravelLogic {
      */ 
     public onTravelDateChanged(dateTravel: DateTimePicker, oldValue: Date) {
         let layout = dateTravel.layout;
-        let [fromDate, toDate] = this.getTravelDates(layout);
+        let fromDate = layout.controls.get<DateTimePicker>("fromTravelDate").params.value;
+        let toDate = layout.controls.get<DateTimePicker>("toTravelDate").params.value;
         if (fromDate && toDate) {
-            if (this.checkTravelDateOrder(layout))
-                this.updateDaysCount(layout);
+            if (this.checkTravelDateOrder(fromDate, toDate))
+                this.updateDaysCount(layout, fromDate, toDate);
             else
                 dateTravel.params.value = oldValue;
         }
