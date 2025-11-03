@@ -1,0 +1,38 @@
+[
+  {
+    "Name": "Старый документ",
+    "CreateDate": "2024-11-01",
+    "Author": "Лебедев",
+    "FromDate": "2024-11-10",
+    "ToDate": "2024-11-20",
+    "PartnerDepartment": "Контрагент №1",
+    "Reason": "Причина 1",
+    "TicketType": 0,
+    "City": "Санкт-Петербург",
+    "StateName": "На оформлении"
+  },
+  {
+    "Name": "Тестовый документ 1",
+    "CreateDate": "2024-11-01",
+    "Author": "Самойлов П. Н.",
+    "FromDate": "2024-11-06",
+    "ToDate": "2024-11-08",
+    "PartnerDepartment": "Контрагент №2",
+    "Reason": "Причина 2",
+    "TicketType": 1,
+    "City": "Москва",
+    "StateName": "На согласовании"
+  },
+  {
+    "Name": "Тестовый документ 2",
+    "CreateDate": "2024-11-01",
+    "Author": "Семенов К. М., 500",
+    "FromDate": "2024-11-06",
+    "ToDate": "2024-11-08",
+    "PartnerDepartment": "Контрагент №3",
+    "Reason": "Причина 3",
+    "TicketType": 0,
+    "City": "Екатеринбург",
+    "StateName": "Закрыто"
+  }
+]
