@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Scrutor" Version="4.2.2" />
+		<PackageReference Include="DocsVision.WebClient.Extensibility" Version="6.1.716" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ReferenceCopyLocalPaths Include="$(NuGetPackageRoot)scrutor\4.2.2\lib\net6.0\Scrutor.dll" />
+	</ItemGroup>
+</Project>
