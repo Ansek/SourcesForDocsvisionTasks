@@ -1,4 +1,5 @@
-﻿using DocsVision.BackOffice.ObjectModel;
+﻿using DocsVision.BackOffice.CardLib.CardDefs;
+using DocsVision.BackOffice.ObjectModel;
 using DocsVision.BackOffice.ObjectModel.Services;
 using DocsVision.Platform.WebClient;
 using Task7.Const;
@@ -36,6 +37,16 @@ namespace Task7.Services
             var dayCount = (request.ToDate.Date - request.FromDate.Date).Days + 1;
             var amount = dailyAllowance * dayCount;
             return new TravelInfo { Amount = amount, DayCount = dayCount };
+        }
+
+        public void SetBusinessTripStatus(SessionContext sessionContext, BusinessTripRequest request)
+        {
+            var context = sessionContext.ObjectContext;
+            var employee = context.GetObject<StaffEmployee>(request.EmployeeId);
+            employee.InactiveStatus = StaffEmployeeInactiveStatus.BusinessTrip;
+            employee.StartDate = request.FromDate.AddHours(3); // GMT+3
+            employee.EndDate = request.ToDate.AddHours(3);
+            context.SaveObject(employee);
         }
 
         public void InitTravelRequestKind(SessionContext sessionContext, Guid cardId)

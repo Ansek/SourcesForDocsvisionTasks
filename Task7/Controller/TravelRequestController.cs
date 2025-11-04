@@ -26,7 +26,14 @@ public class TravelRequestController: ControllerBase
         var result = _travelRequestService.GetManagerInfoByEmployeeId(sessionContext, employeeId);
         return CommonResponse.CreateSuccess(result);
     }
-  
+
+    [HttpPost]
+    public void SetBusinessTripStatus([FromBody] BusinessTripRequest request)
+    {
+        var sessionContext = _contextProvider.GetOrCreateCurrentSessionContext();
+        _travelRequestService.SetBusinessTripStatus(sessionContext, request);
+    }
+
     [HttpPost]
     public CommonResponse<TravelInfo> CalculateTravelInfo([FromBody] TravelInfoRequest request)
     {

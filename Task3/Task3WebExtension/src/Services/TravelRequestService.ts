@@ -4,6 +4,7 @@ import { ITravelRequestService } from "./Interfaces/ITravelRequestService";
 import { ITravelInfoRequest } from "../Model/ITravelInfoRequest";
 import { ITravelInfo } from "../Model/ITravelInfo";
 import { IManagerInfo } from "../Model/IManagerInfo";
+import { IBusinessTripRequest } from "../Model/IBusinessTripRequest";
 
 export class TravelRequestService extends ControllerBase implements ITravelRequestService {
 
@@ -28,6 +29,17 @@ export class TravelRequestService extends ControllerBase implements ITravelReque
         return super.doRequest({
             controller: this.controllerName,
             action: 'CalculateTravelInfo',
+            isApi: false,
+            method: HttpMethods.Post,
+            data: model,
+            options: { isShowOverlay: true }
+        });
+    }
+
+    setBusinessTripStatus(model: IBusinessTripRequest): void {
+        super.doRequest({
+            controller: this.controllerName,
+            action: 'SetBusinessTripStatus',
             isApi: false,
             method: HttpMethods.Post,
             data: model,

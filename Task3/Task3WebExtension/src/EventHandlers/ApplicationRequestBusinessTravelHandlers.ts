@@ -8,6 +8,7 @@ import { IDataChangedEventArgs, IDataChangedEventArgsEx } from "@docsvision/webc
 import { DirectoryDesignerRow } from "@docsvision/webclient/BackOffice/DirectoryDesignerRow";
 import { StaffDirectoryItems } from "@docsvision/webclient/BackOffice/StaffDirectoryItems";
 import { GenModels } from "@docsvision/webclient/Generated/DocsVision.WebClient.Models";
+import { StateButtons } from "@docsvision/webclient/BackOffice/StateButtons";
 
 /**
  * Событие перед сохранением карточки.
@@ -45,7 +46,7 @@ export function ddApplicationRequestBusiness_dateTravelUpdated(
  * @param city Поле выбора города.
  * @param args Аргументы.
  */
-export function ddApplicationRequestBusiness_CityUpdated(
+export function ddApplicationRequestBusiness_cityUpdated(
     city: DirectoryDesignerRow,
     args: IDataChangedEventArgsEx<GenModels.DirectoryDesignerItem>) {
     if (!city || args.newValue === args.oldValue) return;
@@ -58,7 +59,7 @@ export function ddApplicationRequestBusiness_CityUpdated(
  * @param traveler Поле выбора командируемого.
  * @param args Аргументы.
  */
-export function ddApplicationRequestBusiness_TravelerUpdated(
+export function ddApplicationRequestBusiness_travelerUpdated(
     traveler: StaffDirectoryItems,
     args: IDataChangedEventArgsEx<GenModels.IDirectoryItemData>) {
     if (!traveler || args.newValue === args.oldValue) return;
@@ -75,4 +76,17 @@ export function ddApplicationRequestBusiness_showCardDataClicked(
     if (!btn) return;
     let logic = new ApplicationRequestBusinessTravelLogic();
     logic.showCardData(btn.layout);
+}
+
+/**
+ * Событие после смены состояния.
+ * @param states Автомат состояний.
+ * @param args Аргументы.
+ */
+export function ddApplicationRequestBusiness_stateButtonsChanged(
+    states: StateButtons,
+    args: any) {
+    if (!states) return;
+    let logic = new ApplicationRequestBusinessTravelLogic();
+    logic.onStateButtonsChanged(states.layout, args.data.displayName);
 }

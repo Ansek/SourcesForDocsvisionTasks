@@ -10,7 +10,7 @@ import { MessageBox } from "@docsvision/webclient/Helpers/MessageBox/MessageBox"
 import { $TravelRequestService } from "../Services/Interfaces/ITravelRequestService";
 import { $EmployeeController } from "@docsvision/webclient/Generated/DocsVision.WebClient.Controllers";
 import { GenModels } from "@docsvision/webclient/Generated/DocsVision.WebClient.Models";
-import { StaffDirectoryItems } from "@docsvision/webclient/BackOffice/StaffDirectoryItems";
+import { StaffDirectoryItems, StaffValueType } from "@docsvision/webclient/BackOffice/StaffDirectoryItems";
 
 export class ApplicationRequestBusinessTravelLogic {
     /**
@@ -156,4 +156,27 @@ export class ApplicationRequestBusinessTravelLogic {
 
         MessageBox.ShowInfo(msg);
     }
+
+    /**
+     * Дополнительные действия после обновления состояния.
+     * @param layout Разметка.
+     * @param branchName Название перехода в другое состояние.
+     */
+    public onStateButtonsChanged(layout: Layout, branchName: string) {
+        if (branchName === "На оформление") {
+            let fromDate = layout.controls.get<DateTimePicker>("fromTravelDate").params.value;
+            let toDate = layout.controls.get<DateTimePicker>("toTravelDate").params.value;
+            let traveler = layout.controls.get<StaffDirectoryItems>("traveler")
+                .params.value as GenModels.IDirectoryItemData;
+            if (traveler && traveler.dataType === GenModels.DirectoryDataType.Employee) {
+                layout.getService($TravelRequestService).setBusinessTripStatus({
+                    employeeId: traveler.id,
+                    fromDate: fromDate,
+                    toDate: toDate
+                });
+            }
+        }
+    }
 }
+
+
