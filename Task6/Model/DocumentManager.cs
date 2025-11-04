@@ -149,7 +149,8 @@ internal class DocumentManager {
             var docService = _context.GetService<IDocumentService>();
 			var travelRequest = docService.CreateDocument(null, _travelRequestKind);
 			travelRequest.MainInfo.Name = doc.Name;
-			travelRequest.MainInfo.Author = author;
+			travelRequest.Description = doc.Name;
+            travelRequest.MainInfo.Author = author;
 			travelRequest.MainInfo.Registrar = author;
 			
 			var dataSection = new BaseCardSectionRow();

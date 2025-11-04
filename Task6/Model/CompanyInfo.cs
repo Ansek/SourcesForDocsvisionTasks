@@ -92,8 +92,13 @@ internal class CompanyInfo {
 	/// </summary>
 	/// <param name="employee">Сотрудник.</param>
 	/// <returns>Объект руководителя сотрудника.</returns>
-	public StaffEmployee GetManagerByEmployee(StaffEmployee employee) =>
-		_staffService.GetEmployeeManager(employee);
+	public StaffEmployee GetManagerByEmployee(StaffEmployee employee) {
+        var manager = _staffService.GetEmployeeManager(employee);
+        if (manager == employee && manager.Unit.ParentUnit != null) {
+            manager = manager.Unit.ParentUnit.Manager;
+        }
+        return manager;
+    }
 
 	/// <summary>
 	/// Возвращает первого сотрудника c именем searchCity.
