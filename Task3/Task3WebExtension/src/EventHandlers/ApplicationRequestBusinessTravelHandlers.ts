@@ -4,7 +4,10 @@ import { DateTimePicker } from "@docsvision/webclient/Platform/DateTimePicker";
 import { CancelableEventArgs } from "@docsvision/webclient/System/CancelableEventArgs";
 import { ILayoutBeforeSavingEventArgs } from "@docsvision/webclient/System/ILayoutParams";
 import { ApplicationRequestBusinessTravelLogic } from "../Logic/ApplicationRequestBusinessTravelLogic";
-import { IDataChangedEventArgs } from "@docsvision/webclient/System/IDataChangedEventArgs";
+import { IDataChangedEventArgs, IDataChangedEventArgsEx } from "@docsvision/webclient/System/IDataChangedEventArgs";
+import { DirectoryDesignerRow } from "@docsvision/webclient/BackOffice/DirectoryDesignerRow";
+import { StaffDirectoryItems } from "@docsvision/webclient/BackOffice/StaffDirectoryItems";
+import { GenModels } from "@docsvision/webclient/Generated/DocsVision.WebClient.Models";
 
 /**
  * Событие перед сохранением карточки.
@@ -26,7 +29,7 @@ export function ddApplicationRequestBusiness_cardSaving(
 
 /**
  * Событие после обновления даты командировки.
- * @param dateTravel Поле ввода даты.
+ * @param dateTravel Поле выбора даты.
  * @param args Аргументы.
  */
 export function ddApplicationRequestBusiness_dateTravelUpdated(
@@ -35,6 +38,32 @@ export function ddApplicationRequestBusiness_dateTravelUpdated(
     if (!dateTravel || args.newValue === args.oldValue) return;
     let logic = new ApplicationRequestBusinessTravelLogic();
     logic.onTravelDateChanged(dateTravel, args.oldValue);
+}
+
+/**
+ * Событие после обновления города.
+ * @param city Поле выбора города.
+ * @param args Аргументы.
+ */
+export function ddApplicationRequestBusiness_CityUpdated(
+    city: DirectoryDesignerRow,
+    args: IDataChangedEventArgsEx<GenModels.DirectoryDesignerItem>) {
+    if (!city || args.newValue === args.oldValue) return;
+    let logic = new ApplicationRequestBusinessTravelLogic();
+    logic.onCityChanged(city.layout, args.newValue);
+}
+
+/**
+ * Событие после обновления командируемого.
+ * @param traveler Поле выбора командируемого.
+ * @param args Аргументы.
+ */
+export function ddApplicationRequestBusiness_TravelerUpdated(
+    traveler: StaffDirectoryItems,
+    args: IDataChangedEventArgsEx<GenModels.IDirectoryItemData>) {
+    if (!traveler || args.newValue === args.oldValue) return;
+    let logic = new ApplicationRequestBusinessTravelLogic();
+    logic.onTravelerChanged(traveler.layout, args.newValue);
 }
 
 /**
