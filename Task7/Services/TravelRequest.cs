@@ -1,5 +1,4 @@
-﻿using DocsVision.BackOffice.CardLib.CardDefs;
-using DocsVision.BackOffice.ObjectModel;
+﻿using DocsVision.BackOffice.ObjectModel;
 using DocsVision.BackOffice.ObjectModel.Services;
 using DocsVision.Platform.WebClient;
 using Task7.Const;

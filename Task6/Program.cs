@@ -35,7 +35,8 @@ internal class Program {
 					Console.WriteLine(ex.Message);
 				}
 			}
-		}
+            Console.WriteLine();
+        }
 		Console.WriteLine("Press any key to continue...");
 		Console.ReadKey();
 	}
@@ -51,15 +52,17 @@ internal class Program {
 
 	private static void UploadGeneratedDocuments(UserSession session, ObjectContext context) {
 		Console.Write("Количество заявок для генерации = ");
-		if (!Int32.TryParse(Console.ReadLine(), out int count) || count < 1) {
+		if (!int.TryParse(Console.ReadLine(), out int count) || count < 1) {
 			Console.WriteLine("Количество должно быть больше 0.");
 		} else {
 			var docManager = new DocumentManager(session, context, CompanyName);
-			var generator = new TravelRequestGenerator();
-			ConfigureGenerator(generator, docManager);
-			var docs = generator.Generate(count);
+            var generator = new TravelRequestGenerator();
+            AttachProgressLogger(docManager, count);
+            ConfigureGenerator(generator, docManager);
+            var docs = generator.Generate(count);
 			docManager.UploadDocuments(docs);
-		}
+            Console.WriteLine();
+        }
 	}
 
 	private static void DeleteAllDocuments(UserSession session, ObjectContext context) {
@@ -90,4 +93,12 @@ internal class Program {
 			generator.AttachedFileNames.Add(fileName);
 		}
 	}
+
+	private static void AttachProgressLogger(DocumentManager docManager, int count)
+	{
+        int i = 1;
+        var start = DateTime.Now;
+        docManager.OnDocumentAdded += (id) =>
+            Console.Write($"\r{i++}/{count} [{(DateTime.Now - start):mm\\:ss}] {id}");
+    }
 }

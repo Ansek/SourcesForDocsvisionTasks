@@ -10,6 +10,8 @@ namespace Task6.Model;
 
 internal delegate void AccessDeniedEventHandler(string message);
 
+internal delegate void DocumentAddedEventHandler(Guid id);
+
 internal class DocumentManager {
 	/// <summary>
 	/// Сессия.
@@ -74,13 +76,18 @@ internal class DocumentManager {
     /// </summary>
     public event AccessDeniedEventHandler? OnAccessDenied;
 
-	/// <summary>
-	/// Осуществляет поиск пути из ребер до нужного состояния.
-	/// </summary>
-	/// <param name="currentState">Текущее состояние.</param>
-	/// <param name="stateName">Имя искомого состояния.</param>
-	/// <returns>Путь до состояния.</returns>
-	private IEnumerable<StatesStateMachineBranch> FindPathToState(
+    /// <summary>
+    /// Событие на добавление документа.
+    /// </summary>
+    public event DocumentAddedEventHandler? OnDocumentAdded;
+
+    /// <summary>
+    /// Осуществляет поиск пути из ребер до нужного состояния.
+    /// </summary>
+    /// <param name="currentState">Текущее состояние.</param>
+    /// <param name="stateName">Имя искомого состояния.</param>
+    /// <returns>Путь до состояния.</returns>
+    private IEnumerable<StatesStateMachineBranch> FindPathToState(
 		StatesState? currentState, string stateName) {
 		if (currentState == null) {
 			return Enumerable.Empty<StatesStateMachineBranch>();
@@ -187,7 +194,9 @@ internal class DocumentManager {
 				}
 			}
 			ChangeState(travelRequest, doc.StateName);
-		}
+
+			OnDocumentAdded?.Invoke(travelRequest.GetObjectId());
+        }
 	}
 
 	/// <summary>
