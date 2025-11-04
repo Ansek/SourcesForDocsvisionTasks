@@ -64,10 +64,15 @@ internal class TravelRequestCard {
 	/// </summary>
 	public const string ToDate = "toTravelDate";
 
-	/// <summary>
-	/// Кол-во дней в командировке.
-	/// </summary>
-	public const string DayCount = "dayCount";
+    /// <summary>
+    /// Cуточные.
+    /// </summary>
+    public const string DailyAllowance = "DailyAllowance";
+
+    /// <summary>
+    /// Кол-во дней в командировке.
+    /// </summary>
+    public const string DayCount = "dayCount";
 
 	/// <summary>
 	/// Сумма командировочных.

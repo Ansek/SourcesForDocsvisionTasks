@@ -10,7 +10,7 @@ namespace Task6.Model;
 
 internal delegate void AccessDeniedEventHandler(string message);
 
-internal class DocumentsManager {
+internal class DocumentManager {
 	/// <summary>
 	/// Сессия.
 	/// </summary>
@@ -47,7 +47,7 @@ internal class DocumentsManager {
 	/// <param name="session">Сессия.</param>
 	/// <param name="context">Контекст.</param>
 	/// <param name="companyName">Название организации.</param>
-	public DocumentsManager(UserSession session, ObjectContext context, string? companyName = null) {
+	public DocumentManager(UserSession session, ObjectContext context, string? companyName = null) {
 		_session = session;
 		_context = context;
 		CompanyInfo = new CompanyInfo(context, companyName);
@@ -64,10 +64,15 @@ internal class DocumentsManager {
 	/// </summary>
 	public IList<StatesState> States => _stateService.GetStates(_travelRequestKind);
 
-	/// <summary>
-	/// Событие на исключение из-за прав доступа.
-	/// </summary>
-	public event AccessDeniedEventHandler? OnAccessDenied;
+    /// <summary>
+    /// Возвращает количество документов, доступных пользователю.
+    /// </summary>
+    public int DocumentCount => _session.CardManager.GetCards(CardDocument.ID).Count;
+
+    /// <summary>
+    /// Событие на исключение из-за прав доступа.
+    /// </summary>
+    public event AccessDeniedEventHandler? OnAccessDenied;
 
 	/// <summary>
 	/// Осуществляет поиск пути из ребер до нужного состояния.
@@ -137,9 +142,11 @@ internal class DocumentsManager {
 			var partner = CompanyInfo.GetPartnerDepartmentName(doc.PartnerDepartment);
 			var secretary = CompanyInfo.GetSecretary();
 			var manager = CompanyInfo.GetManagerByEmployee(author);
-			var dayCount = (doc.ToDate - doc.FromDate).Days + 1;
+            var dailyAllowance = (decimal)city.ItemCard.MainInfo[TravelRequestCard.DailyAllowance];
+            var dayCount = (doc.ToDate.Date - doc.FromDate.Date).Days + 1;
+			var amount = dailyAllowance * dayCount;
 
-			var docService = _context.GetService<IDocumentService>();
+            var docService = _context.GetService<IDocumentService>();
 			var travelRequest = docService.CreateDocument(null, _travelRequestKind);
 			travelRequest.MainInfo.Name = doc.Name;
 			travelRequest.MainInfo.Author = author;
@@ -150,7 +157,7 @@ internal class DocumentsManager {
 			dataSection[TravelRequestCard.ToDate] = doc.ToDate;
 			dataSection[TravelRequestCard.City] = city.GetObjectId();
 			dataSection[TravelRequestCard.DayCount] = dayCount;
-			dataSection[TravelRequestCard.Amount] = 1000 * dayCount;				
+			dataSection[TravelRequestCard.Amount] = amount;				
 			dataSection[TravelRequestCard.PartnerDepartment] = partner.GetObjectId();
 			dataSection[TravelRequestCard.Reason] = doc.Reason;
 			dataSection[TravelRequestCard.TicketType] = doc.TicketType;

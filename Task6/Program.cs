@@ -44,7 +44,7 @@ internal class Program {
 		var json = File.ReadAllText(JSONFile);
 		var docs = JsonSerializer.Deserialize<List<RequiredTravelRequestData>>(json);
 		if (docs != null) {
-			var docManager = new DocumentsManager(session, context, CompanyName);
+			var docManager = new DocumentManager(session, context, CompanyName);
 			docManager.UploadDocuments(docs);
 		}
 	}
@@ -54,7 +54,7 @@ internal class Program {
 		if (!Int32.TryParse(Console.ReadLine(), out int count) || count < 1) {
 			Console.WriteLine("Количество должно быть больше 0.");
 		} else {
-			var docManager = new DocumentsManager(session, context, CompanyName);
+			var docManager = new DocumentManager(session, context, CompanyName);
 			var generator = new TravelRequestGenerator();
 			ConfigureGenerator(generator, docManager);
 			var docs = generator.Generate(count);
@@ -63,12 +63,12 @@ internal class Program {
 	}
 
 	private static void DeleteAllDocuments(UserSession session, ObjectContext context) {
-		var docManager = new DocumentsManager(session, context);
+		var docManager = new DocumentManager(session, context);
 		docManager.OnAccessDenied += Console.WriteLine;
 		docManager.DeleteAllDocuments();
 	}
 
-	private static void ConfigureGenerator(TravelRequestGenerator generator, DocumentsManager docManager) {
+	private static void ConfigureGenerator(TravelRequestGenerator generator, DocumentManager docManager) {
 		generator.Employees.AddRange(docManager.CompanyInfo.Employees.Select(x => x.DisplayName));
 		generator.PartnerDepartments.AddRange(docManager.CompanyInfo.PartnerDepartments.Select(x => x.Name));
 		generator.Reasons.Add("Повышение квалификации.");
@@ -76,7 +76,7 @@ internal class Program {
 		generator.Reasons.Add("Заключение договоров.");
 		generator.Сities.AddRange(docManager.CompanyInfo.Сities.Select(x => x.Name));
 		generator.StateNames.AddRange(docManager.States.Select(x => x.DefaultName));
-		generator.BeginRequestNumber = 1;
+		generator.BeginRequestNumber = docManager.DocumentCount + 1;
 		generator.MinCreatedDate = new DateTime(2025, 09, 01);
 		generator.MaxCreatedDate = new DateTime(2025, 12, 01);
 		generator.MinDaysToStart = 2;
