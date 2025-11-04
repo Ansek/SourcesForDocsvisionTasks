@@ -31,10 +31,15 @@ internal class DocumentsManager {
 	/// </summary>
 	private readonly KindsCardKind _travelRequestKind;
 
-	/// <summary>
-	/// Информация о компании.
-	/// </summary>
-	public CompanyInfo CompanyInfo { get; }
+    /// <summary>
+    /// Структура карточки заявки на командировку.
+    /// </summary>
+    private readonly TravelRequestCard _travelRequestCard;
+
+    /// <summary>
+    /// Информация о компании.
+    /// </summary>
+    public CompanyInfo CompanyInfo { get; }
 
 	/// <summary>
 	/// Менеджер для управлении документами.
@@ -51,7 +56,8 @@ internal class DocumentsManager {
 			new QueryObject(
 				KindsCardKind.NameProperty.Name,
 				TravelRequestCard.KindName));
-	}
+		_travelRequestCard = new TravelRequestCard(session);
+    }
 
 	/// <summary>
 	/// Возращает список доступных состояний документа.
@@ -153,14 +159,14 @@ internal class DocumentsManager {
 			dataSection[TravelRequestCard.ManagerPhone] = manager.Phone;
 			
 			var applicantSection = new BaseCardSectionRow();
-			applicantSection[TravelRequestCard.Applicants.Applicant] = secretary.GetObjectId();
+			applicantSection[TravelRequestCard.Applicant] = secretary.GetObjectId();
 
 			var approverSection = new BaseCardSectionRow();
-			approverSection[TravelRequestCard.Approvers.Approver] = manager.GetObjectId();
+			approverSection[TravelRequestCard.Approver] = manager.GetObjectId();
 
-			var data = (IList<BaseCardSectionRow>)travelRequest.GetSection(TravelRequestCard.ID);
-			var applicants = (IList<BaseCardSectionRow>)travelRequest.GetSection(TravelRequestCard.Applicants.ID);
-			var approvers = (IList<BaseCardSectionRow>)travelRequest.GetSection(TravelRequestCard.Approvers.ID);
+			var data = travelRequest.GetSection(_travelRequestCard.TravelRequestSectionId);
+			var applicants = travelRequest.GetSection(_travelRequestCard.ApplicantsSectionId);
+			var approvers = travelRequest.GetSection(_travelRequestCard.ApproversSectionId);
 
 			data.Add(dataSection);
 			applicants.Add(applicantSection);
@@ -172,8 +178,6 @@ internal class DocumentsManager {
 					docService.AddMainFile(travelRequest, fileName);
 				}
 			}
-			_context.AcceptChanges();
-
 			ChangeState(travelRequest, doc.StateName);
 		}
 	}

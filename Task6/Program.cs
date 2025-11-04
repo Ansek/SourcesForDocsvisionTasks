@@ -17,7 +17,7 @@ internal class Program {
 			Console.WriteLine("3. Удалить все документы");
 			Console.WriteLine("0. Выход");
 			Console.Write("> ");
-			if (!Int32.TryParse(Console.ReadLine(), out int cmd) ||
+			if (!int.TryParse(Console.ReadLine(), out int cmd) ||
 				cmd < 0 || cmd > 3) {
 				Console.WriteLine("Команда не распознана.");
 			} else if (cmd == 0) {

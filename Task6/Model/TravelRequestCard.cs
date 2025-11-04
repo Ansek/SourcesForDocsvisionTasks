@@ -1,21 +1,63 @@
-﻿namespace Task6.Model;
+﻿using DocsVision.Platform.ObjectManager;
+
+namespace Task6.Model;
 
 internal class TravelRequestCard {
 
-	/// <summary>
-	/// Идентификатор секции "Командировка".
-	/// </summary>
-	public static readonly Guid ID = new("CE5F1DD4-EF59-43AE-AE39-2E186605CABA");
+    public TravelRequestCard(UserSession session)
+    {
+        var docCardType = session.CardManager.CardTypes.Where(x => x.Name == "Документ").First();
+        if (docCardType != null) { 
+            TravelRequestSectionId = docCardType.Sections.Where(x => x.Name == "Командировка").First().Id;
+            ApplicantsSectionId = docCardType.Sections.Where(x => x.Name == "ОформляющиеКомандировку").First().Id;
+            ApproversSectionId = docCardType.Sections.Where(x => x.Name == "СогласующиеКомандировку").First().Id;
+        }
+    }
 
-	/// <summary>
-	/// Название вида документа.
-	/// </summary>
-	public static readonly string KindName = "Заявка на командировку";
+    /// <summary>
+    /// Идентификатор секции "Командировка".
+    /// </summary>
+    public readonly Guid TravelRequestSectionId;
 
-	/// <summary>
-	/// Даты командировки 'с'.
-	/// </summary>
-	public const string FromDate = "fromTravelDate";
+    /// <summary>
+    /// Идентификатор секции "ОформляющиеКомандировку".
+    /// </summary>
+    public readonly Guid ApplicantsSectionId;
+
+    /// <summary>
+    /// Идентификатор секции "СогласующиеКомандировку".
+    /// </summary>
+    public readonly Guid ApproversSectionId;
+
+    /// <summary>
+    /// Название вида документа.
+    /// </summary>
+    public const string KindName = "Заявка на командировку";
+
+    /// <summary>
+    /// Название справочника городов.
+    /// </summary>
+    public const string CityDirectoryName = "Города";
+
+    /// <summary>
+    /// Перечисление типов билетов.
+    /// </summary>
+    public enum TicketTypes
+    {
+        /// <summary>
+        /// Авиа.
+        /// </summary>
+        Avia = 0,
+        /// <summary>
+        /// Поезд.
+        /// </summary>
+        Train = 1
+    }
+
+    /// <summary>
+    /// Даты командировки 'с'.
+    /// </summary>
+    public const string FromDate = "fromTravelDate";
 
 	/// <summary>
 	/// Даты командировки 'по'.
@@ -42,40 +84,20 @@ internal class TravelRequestCard {
 	/// </summary>
 	public const string Reason = "reasonTravel";
 
-	/// <summary>
-	/// Константы для секции "ОформляющиеКомандировку".
-	/// </summary>
-	public static class Applicants {
-		/// <summary>
-		/// Идентификатор секции "ОформляющиеКомандировку".
-		/// </summary>
-		public static readonly Guid ID = new("590B4AF7-42D3-4588-8C70-18C213C66CD6");
+    /// <summary>
+    /// Оформитель.
+    /// </summary>
+    public const string Applicant = "applicant";
 
-		/// <summary>
-		/// Оформитель.
-		/// </summary>
-		public const string Applicant = "applicant";
-	}
+    /// <summary>
+    /// Согласующий.
+    /// </summary>
+    public const string Approver = "approver";
 
-	/// <summary>
-	/// Константы для секции "СогласущиеКомандировку".
-	/// </summary>
-	public static class Approvers {
-		/// <summary>
-		/// Идентификатор секции "СогласущиеКомандировку".
-		/// </summary>
-		public static readonly Guid ID = new("81ABBA60-9EEB-4870-B172-D88E9B30DC0E");
-
-		/// <summary>
-		/// Согласующий.
-		/// </summary>
-		public const string Approver = "approver";
-	}
-
-	/// <summary>
-	/// Тип билета.
-	/// </summary>
-	public const string TicketType = "tickets";
+    /// <summary>
+    /// Тип билета.
+    /// </summary>
+    public const string TicketType = "tickets";
 
 	/// <summary>
 	/// Командируемый.
@@ -96,23 +118,4 @@ internal class TravelRequestCard {
 	/// Телефон.
 	/// </summary>
 	public const string ManagerPhone = "phoneNumberManager";
-
-	/// <summary>
-	/// Перечисление типов билетов.
-	/// </summary>
-	public enum TicketTypes {
-		/// <summary>
-		/// Авиа.
-		/// </summary>
-		Avia = 0,
-		/// <summary>
-		/// Поезд.
-		/// </summary>
-		Train = 1
-	}
-
-	/// <summary>
-	/// Название справочника городов.
-	/// </summary>
-	public const string CityDirectoryName = "Города";
 }
