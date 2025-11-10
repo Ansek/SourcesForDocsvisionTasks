@@ -1,0 +1,11 @@
+﻿{
+  "DocsVision": {
+    "Platform": {
+      "Server": {
+        "Extensions": {
+          "BusinessTripRequestExtension": "Task8.BusinessTripRequestExtension, Task8, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8559d64839cfe4e4"
+        }
+      }
+    }
+  }
+}

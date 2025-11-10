@@ -9,6 +9,7 @@
 	<ItemGroup>
 		<PackageReference Include="Scrutor" Version="4.2.2" />
 		<PackageReference Include="DocsVision.WebClient.Extensibility" Version="6.1.716" />
+		<PackageReference Include="DocsVision.Layout.WebClient" Version="6.1.716" />
 	</ItemGroup>
 
 	<ItemGroup>

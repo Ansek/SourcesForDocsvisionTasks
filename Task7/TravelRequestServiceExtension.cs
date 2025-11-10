@@ -1,8 +1,10 @@
 ﻿using DocsVision.BackOffice.CardLib.CardDefs;
+using DocsVision.Layout.WebClient.Services;
 using DocsVision.WebClient.Extensibility;
 using DocsVision.WebClientLibrary.ObjectModel.Services.EntityLifeCycle;
 using Microsoft.Extensions.DependencyInjection;
 using Task7.CardLifeCycle;
+using Task7.DataGridPlugin;
 using Task7.Services;
 
 namespace Task7;
@@ -34,6 +36,7 @@ public class TravelRequestServiceExtension : WebClientExtension
     public override void InitializeServiceCollection(IServiceCollection services)
     {
         services.AddSingleton<ITravelRequest, TravelRequest>();
+		services.AddSingleton<IDataGridControlPlugin, BusinessTripRequestPlugin>();
         // Декорируем базовый CardLifeCycle через Scrutor
         services.Decorate<ICardLifeCycleEx>((original, serviceProvider) =>
         {
