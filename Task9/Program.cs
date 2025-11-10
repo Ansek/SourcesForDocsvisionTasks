@@ -1,5 +1,4 @@
-﻿using System.Text;
-using System.Text.Encodings.Web;
+﻿using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
@@ -22,6 +21,7 @@ internal class Program
         Console.WriteLine($"- всего подразделений: {info.DepartmentCount};");
         Console.WriteLine($"- всего наблюдателей: {info.ObserverCount}.");
         Console.WriteLine($"Выполнение запроса...");
+        ShowTimer();
         using var dbSession = new DBSession();
         var task = dbSession.AddObserverDepartmentsAsync(json);
         task.Wait();
@@ -75,5 +75,17 @@ internal class Program
         }
         return new CountInfo(departmentCount, observerCount);
     }
-}
 
+    private static void ShowTimer()
+    {
+        var start = DateTime.Now;
+        Console.WriteLine();
+        Task.Run(() => {
+            while (true)
+            {
+                Console.Write($"\u001b[1A\r{(DateTime.Now - start):mm\\:ss}\n");
+                Thread.Sleep(1000);
+            }
+        });
+    }
+}
