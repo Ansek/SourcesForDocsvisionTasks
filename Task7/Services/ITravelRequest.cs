@@ -11,5 +11,7 @@ public interface ITravelRequest
 
     void SetBusinessTripStatus(SessionContext sessionContext, BusinessTripRequest request);
 
+    List<TicketInfo>? SearchTickets(SessionContext sessionContext, TicketInfoRequest request);
+
     void InitTravelRequestKind(SessionContext sessionContext, Guid cardId);
 }

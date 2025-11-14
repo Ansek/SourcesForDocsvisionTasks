@@ -41,4 +41,14 @@ public class TravelRequestController: ControllerBase
         var result = _travelRequestService.CalculateTravelInfo(sessionContext, request);
         return CommonResponse.CreateSuccess(result);
     }
+
+    [HttpPost]
+    public CommonResponse<List<TicketInfo>> SearchTickets([FromBody] TicketInfoRequest request)
+    {
+        var sessionContext = _contextProvider.GetOrCreateCurrentSessionContext();
+        var result = _travelRequestService.SearchTickets(sessionContext, request);
+        if (result is null)
+            return CommonResponse.CreateError<List<TicketInfo>>("Ошибка в запросе. Получен null.");
+        return CommonResponse.CreateSuccess(result);
+    }
 }

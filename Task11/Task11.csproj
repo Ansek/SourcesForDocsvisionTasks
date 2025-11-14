@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<SignAssembly>true</SignAssembly>
+	<AssemblyOriginatorKeyFile>Task11.snk</AssemblyOriginatorKeyFile>
+	<SGenKeyFile>Task11.snk</SGenKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="DocsVision.Platform.WebLayoutsDesignerExtension" Version="6.1.1110" />
+  </ItemGroup>
+</Project>

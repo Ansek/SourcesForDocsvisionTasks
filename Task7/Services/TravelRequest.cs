@@ -1,4 +1,7 @@
-﻿using DocsVision.BackOffice.ObjectModel;
+﻿using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using DocsVision.BackOffice.ObjectModel;
 using DocsVision.BackOffice.ObjectModel.Services;
 using DocsVision.Platform.WebClient;
 using Task7.Const;
@@ -8,6 +11,9 @@ namespace Task7.Services
 {
     public class TravelRequest : ITravelRequest
     {
+        private const string OriginIATA = "LED";
+        private const string APIToken = "b165d8c4be5500d4da61df5067fd34ad";
+
         private static StaffEmployee GetManagerByEmployee(IStaffService staffService, StaffEmployee employee)
         {
             var manager = staffService.GetEmployeeManager(employee);
@@ -46,6 +52,37 @@ namespace Task7.Services
             employee.StartDate = request.FromDate.AddHours(3); // GMT+3
             employee.EndDate = request.ToDate.AddHours(3);
             context.SaveObject(employee);
+        }
+
+        private record ApiResponse(
+            [property: JsonPropertyName("data")] List<TicketInfo> Data
+        );
+
+        public List<TicketInfo>? SearchTickets(SessionContext sessionContext, TicketInfoRequest request)
+        {
+            var context = sessionContext.ObjectContext;
+            var destination = context.GetObject<BaseUniversalItem>(request.DestinationId);
+            var destinationIATA = (string)destination.ItemCard.MainInfo[TravelRequestCard.IATA];
+
+            var api = new StringBuilder();
+            api.Append("https://api.travelpayouts.com/aviasales/v3/prices_for_dates");
+            api.Append("?origin=");
+            api.Append(OriginIATA);
+            api.Append("&destination=");
+            api.Append(destinationIATA);
+            api.Append("&departure_at=");
+            api.Append(request.DepartureAt.AddHours(3).ToString("yyyy-MM-dd"));
+            api.Append("&return_at=");
+            api.Append(request.ReturnAt.AddHours(3).ToString("yyyy-MM-dd"));
+            api.Append("&unique=false&sorting=price&direct=true&currency=rub&limit=10&page=1&one_way=true");
+            api.Append("&token=");
+            api.Append(APIToken);
+
+            var httpClient = new HttpClient();
+            var response = httpClient.GetAsync(api.ToString()).Result;
+            var json = response.Content.ReadAsStringAsync().Result;
+            TicketInfo.NextId = 0;
+            return JsonSerializer.Deserialize<ApiResponse>(json)?.Data;
         }
 
         public void InitTravelRequestKind(SessionContext sessionContext, Guid cardId)

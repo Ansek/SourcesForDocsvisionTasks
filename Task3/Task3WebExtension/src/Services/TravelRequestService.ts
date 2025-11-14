@@ -5,6 +5,8 @@ import { ITravelInfoRequest } from "../Model/ITravelInfoRequest";
 import { ITravelInfo } from "../Model/ITravelInfo";
 import { IManagerInfo } from "../Model/IManagerInfo";
 import { IBusinessTripRequest } from "../Model/IBusinessTripRequest";
+import { ITicketInfoRequest } from "../Model/ITicketInfoRequest";
+import { ITicketInfo } from "../Model/ITicketInfo";
 
 export class TravelRequestService extends ControllerBase implements ITravelRequestService {
 
@@ -40,6 +42,17 @@ export class TravelRequestService extends ControllerBase implements ITravelReque
         super.doRequest({
             controller: this.controllerName,
             action: 'SetBusinessTripStatus',
+            isApi: false,
+            method: HttpMethods.Post,
+            data: model,
+            options: { isShowOverlay: true }
+        });
+    }
+
+    searchTickets(model: ITicketInfoRequest): Promise<ITicketInfo[]> {
+        return super.doRequest({
+            controller: this.controllerName,
+            action: 'SearchTickets',
             isApi: false,
             method: HttpMethods.Post,
             data: model,

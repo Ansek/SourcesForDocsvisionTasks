@@ -45,6 +45,11 @@ internal class TravelRequestCard {
     public const string DailyAllowance = "DailyAllowance";
 
     /// <summary>
+    /// IATA-код города или аэропорта.
+    /// </summary>
+    public const string IATA = "IATA";
+
+    /// <summary>
     /// Оформитель.
     /// </summary>
     public const string Applicant = "applicant";
