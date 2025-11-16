@@ -32,8 +32,8 @@ public class TicketInfo
     public string? DestinationAirport { get; set; }
 
     [property: JsonPropertyName("departure_at")]
-    public DateTime DepartureAt { get; set; }
+    public string? DepartureAt { get; set; }
 
     [property: JsonPropertyName("return_at")]
-    public DateTime ReturnAt { get; set; }
+    public string? ReturnAt { get; set; }
 }
