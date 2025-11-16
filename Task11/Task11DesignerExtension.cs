@@ -8,18 +8,11 @@ class Task11DesignerExtension(IServiceProvider provider) : WebLayoutsDesignerExt
 {
     protected override Dictionary<string, PropertyDescription> GetPropertyDescriptions()
     {
-        return new Dictionary<string, PropertyDescription> {
-            { "CostLabel", SearchTicketsControl.GetCostLabelPropertyDescription() },
-            { "DestinationUI", SearchTicketsControl.GetDestinationUIPropertyDescription() },
-            { "DepartureAtUI", SearchTicketsControl.GetDepartureAtUIPropertyDescription() },
-            { "ReturnAtUI", SearchTicketsControl.GetReturnAtUIPropertyDescription() }
-        };
+        return SearchTicketsControl.GetPropertyDescriptions();
     }
 
     protected override List<ControlTypeDescription> GetControlTypeDescriptions()
     {
-        return [
-            SearchTicketsControl.GetTypeDescription(PropertyFactory)
-        ];
+        return [ SearchTicketsControl.GetTypeDescription(PropertyFactory) ];
     }
 }
