@@ -1,8 +1,10 @@
 export interface ITicketInfo
 {
     id: number;
-    airline: string;
-    flightNumber: string;
+    departureAirline: string;
+    departureFlightNumber: string;
+    returnAirline?: string;
+    returnFlightNumber?: string;
     price: number;
     originAirport: string;
     destinationAirport: string;

@@ -85,11 +85,13 @@ export class SearchTicketsControl extends BaseControl<SearchTicketsControlParams
     }
 
     private departureFlightToString(info: ITicketInfo): string {
-        return `${info.originAirport}→${info.destinationAirport} ${info.airline}-${info.flightNumber} ${format(parseISO(info.departureAt), 'HH:mm dd.MM.yyyy')}`
+        return `${info.originAirport}→${info.destinationAirport} ${info.departureAirline}-${info.departureFlightNumber} ` +
+            format(parseISO(info.departureAt), 'HH:mm dd.MM.yyyy');
     }
 
     private returnFlightToString(info: ITicketInfo): string {
-        return `${info.destinationAirport}→${info.originAirport} ${info.airline}-${info.flightNumber} ${format(parseISO(info.returnAt), 'HH:mm dd.MM.yyyy')}`
+        return `${info.destinationAirport}→${info.originAirport} ${info.returnAirline}-${info.returnFlightNumber} ` +
+            format(parseISO(info.returnAt), 'HH:mm dd.MM.yyyy');
     }
 
     private ticketInfoToString(info: ITicketInfo): string {

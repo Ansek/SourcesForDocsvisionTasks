@@ -11,10 +11,16 @@ public class TicketInfo
     public int Id { get; set; } = NextId++;
 
     [property: JsonPropertyName("airline")]
-    public string? Airline { get; set; }
+    public string? DepartureAirline { get; set; }
 
     [property: JsonPropertyName("flight_number")]
-    public string? FlightNumber { get; set; }
+    public string? DepartureFlightNumber { get; set; }
+
+    [property: JsonIgnore]
+    public string? ReturnAirline { get; set; }
+
+    [property: JsonIgnore]
+    public string? ReturnFlightNumber { get; set; }
 
     [property: JsonPropertyName("price")]
     public int Price { get; set; }
